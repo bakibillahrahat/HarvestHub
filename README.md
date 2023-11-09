@@ -62,7 +62,7 @@ The Farm-to-Consumer Management System is a comprehensive software solution desi
 2. Install dependencies:
 
    ```bash
-   cd farm-to-consumer
+   cd HarvestHub
    npm install
    ```
 3. Set up environmental variables:
