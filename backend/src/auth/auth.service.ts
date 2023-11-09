@@ -1,15 +1,19 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 import { Userdto } from 'src/user/dto';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { AuthDto } from './dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
+    private jwt: JwtService,
+    private config: ConfigService,
   ) {}
   async singUp(dto: Userdto, role: string) {
     const password = dto.password;
@@ -49,7 +53,26 @@ export class AuthService {
     // if password incorrect throw exception
     if (!passMatches) throw new ForbiddenException('Invalid Credentials!');
     // send back th user
-    delete user.password;
-    return user;
+
+    return this.signToken(user.id, user.email);
+  }
+  async signToken(
+    userId: number,
+    email: string,
+  ): Promise<{ access_token: string }> {
+    const payload = {
+      sub: userId,
+      email,
+    };
+    const secret = this.config.get('JWT_SECRET');
+
+    const token = await this.jwt.signAsync(payload, {
+      expiresIn: '15m',
+      secret: secret,
+    });
+
+    return {
+      access_token: token,
+    };
   }
 }
