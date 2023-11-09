@@ -1,22 +1,13 @@
-import { IsNotEmpty, IsString, Matches } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator';
 
 // export Authdto
-export class Authdto {
-  @IsNotEmpty({ message: 'Name cannot be empty' })
-  @IsString()
-  name: string;
+export class AuthDto {
   @IsNotEmpty()
-  @IsString()
-  @Matches(/^@.{2,5}$/, { message: 'username contains special character.' })
-  username: string;
+  @IsEmail()
+  email: string;
+
   @IsNotEmpty()
   @IsString()
   @Matches(/^(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{4,10}$/)
   password: string;
-  @IsNotEmpty()
-  @IsString()
-  phone: string;
-  @IsNotEmpty()
-  @IsString()
-  address: string;
 }
