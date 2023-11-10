@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  HttpCode,
+  HttpStatus,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -18,6 +20,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   // user login controller function
+  @HttpCode(HttpStatus.OK)
   @Post('signin')
   @UsePipes(new ValidationPipe())
   signin(@Body() dto: AuthDto) {

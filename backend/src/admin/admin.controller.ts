@@ -7,13 +7,26 @@ import {
   Put,
   Delete,
   Param,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { ProducerInfo } from './producer.dto';
+import { Request } from 'express';
+import { JwtGuard } from 'src/auth/guard';
 
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
+  @UseGuards(JwtGuard)
+  @Get('me')
+  getMe(@Req() req: Request) {
+    const userdata = req.user;
+    delete userdata['role'];
+    delete userdata['createdAt'];
+    delete userdata['updatedAt'];
+    return userdata;
+  }
 
   @Get('producer')
   getHello(): string {
@@ -35,6 +48,4 @@ export class AdminController {
   deleteProducer(@Param('id') id: number): string {
     return this.adminService.deleteProducer(id);
   }
-
-  //   @Delete('')
 }

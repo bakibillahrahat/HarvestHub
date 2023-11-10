@@ -20,22 +20,22 @@ export class AuthService {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
     const id = Math.floor(Math.random() * 1000);
-    const data = {
-      id: id,
-      name: dto.name,
-      username: dto.username,
-      email: dto.email,
-      password: hashedPassword,
-      phone: dto.phone,
-      address: dto.address,
-      avater: dto.avater,
-      role: role,
-    };
 
     try {
+      const data = {
+        id: id,
+        name: dto.name,
+        username: dto.username,
+        email: dto.email,
+        password: hashedPassword,
+        phone: dto.phone,
+        address: dto.address,
+        avater: dto.avater,
+        role: role,
+      };
+
       const user = this.userRepo.save(data);
-      delete (await user).password;
-      return user;
+      return this.signToken((await user).id, (await user).email);
     } catch (err) {
       if (err.code == 23505) {
         throw new ForbiddenException('User already exists!');
@@ -54,7 +54,7 @@ export class AuthService {
     if (!passMatches) throw new ForbiddenException('Invalid Credentials!');
     // send back th user
 
-    return this.signToken(user.id, user.email);
+    return this.signToken((await user).id, (await user).email);
   }
   async signToken(
     userId: number,
