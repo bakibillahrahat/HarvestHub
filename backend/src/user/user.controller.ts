@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { EditUserDto } from './dto';
 import { UserService } from './user.service';
@@ -20,8 +28,8 @@ export class UserController {
   editUser(@Param('id') id: number, @Body() dto: EditUserDto) {
     return this.userService.editUser(id, dto);
   }
-  @Delete(':id')
-  deleteUser(@Param('id') id: number){
+  @Delete('/:id')
+  deleteUser(@Param('id') id: number) {
     return this.userService.deleteUser(id);
   }
 }

@@ -32,7 +32,7 @@ export class UserService {
     return user;
   }
 
-  async editUser(id: number, @Body() dto: EditUserDto): Promise<Object> {
+  async editUser(id: number, @Body() dto: EditUserDto): Promise<object> {
     const password = dto.password;
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -42,7 +42,12 @@ export class UserService {
     return user;
   }
 
-  async deleteUser(id: number): Promise<void> {
-    await this.userRepo.delete(id);
+  async deleteUser(id: number): Promise<object> {
+    const user = this.getUserByID(id);
+    if (!user) {
+      throw new ForbiddenException('User Not found!');
+    }
+    await this.userRepo.delete(user['id']);
+    return { msg: 'User Delete Successfully!' };
   }
 }
