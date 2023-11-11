@@ -11,8 +11,8 @@ import { ProductModule } from './product/product.module';
 @Module({
   imports: [
     AuthModule,
-    AdminModule,
     UserModule,
+    AdminModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       port: 5434,

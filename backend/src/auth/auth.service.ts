@@ -7,6 +7,7 @@ import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { AuthDto } from './dto';
 import { ConfigService } from '@nestjs/config';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,8 @@ export class AuthService {
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
+  private readonly secretKey: string = this.config.get('JWT_SECRET');
+  private readonly blacklist: Set<string> = new Set();
   async singUp(dto: Userdto, role: string) {
     const password = dto.password;
     const salt = await bcrypt.genSalt();
@@ -75,4 +78,7 @@ export class AuthService {
       access_token: token,
     };
   }
+
+  async logout(){}
+  async refreshTokens() {}
 }

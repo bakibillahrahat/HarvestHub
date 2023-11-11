@@ -43,7 +43,7 @@ export class UserService {
   }
 
   async deleteUser(id: number): Promise<object> {
-    const user = this.getUserByID(id);
+    const user = await this.getUserByID(id);
     if (!user) {
       throw new ForbiddenException('User Not found!');
     }
