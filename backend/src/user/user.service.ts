@@ -26,7 +26,7 @@ export class UserService {
     });
   }
 
-  async getUserByID(id: number): Promise<UserEntity> {
+  async getUserByID(id: string): Promise<UserEntity> {
     const user = this.userRepo.findOneBy({ id: id });
     delete (await user).password;
     return user;
@@ -42,7 +42,7 @@ export class UserService {
     return user;
   }
 
-  async deleteUser(id: number): Promise<object> {
+  async deleteUser(id: string): Promise<object> {
     const user = await this.getUserByID(id);
     if (!user) {
       throw new ForbiddenException('User Not found!');

@@ -20,7 +20,7 @@ export class UserController {
     return this.userService.allUser();
   }
   @Get('/:id')
-  searchUserBy(@Param('id') userID: number): Promise<UserEntity> {
+  searchUserBy(@Param('id') userID: string): Promise<UserEntity> {
     let user = this.userService.getUserByID(userID);
     return user;
   }
@@ -29,7 +29,7 @@ export class UserController {
     return this.userService.editUser(id, dto);
   }
   @Delete('/:id')
-  deleteUser(@Param('id') id: number) {
+  deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
   }
 }

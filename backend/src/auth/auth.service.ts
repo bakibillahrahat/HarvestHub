@@ -22,7 +22,16 @@ export class AuthService {
     const password = dto.password;
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
-    const id = Math.floor(Math.random() * 1000);
+    let id = '';
+    if (role === 'admin') {
+      id = `admin_${Math.floor(Math.random() * 100)}`;
+    } else if (role === 'manager') {
+      id = `manager_${Math.floor(Math.random() * 200)}`;
+    } else if (role === 'customer') {
+      id = `customer_${Math.floor(Math.random() * 200)}`;
+    } else if (role === 'seller') {
+      id = `seller_${Math.floor(Math.random() * 200)}`;
+    }
 
     try {
       const data = {
@@ -60,7 +69,7 @@ export class AuthService {
     return this.signToken((await user).id, (await user).email);
   }
   async signToken(
-    userId: number,
+    userId: string,
     email: string,
   ): Promise<{ access_token: string }> {
     const payload = {
@@ -79,6 +88,6 @@ export class AuthService {
     };
   }
 
-  async logout(){}
+  async logout() {}
   async refreshTokens() {}
 }

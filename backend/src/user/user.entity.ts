@@ -2,16 +2,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
-  Unique,
+  Index,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('user')
-@Unique(['username', 'email', 'phone'])
+// @Unique(['username', 'email', 'phone'])
+@Index(['username', 'email', 'phone'], { unique: true })
 export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  @PrimaryColumn()
+  id: string;
   @Column({ name: 'name', type: 'character varying' })
   name: string;
   @Column()
