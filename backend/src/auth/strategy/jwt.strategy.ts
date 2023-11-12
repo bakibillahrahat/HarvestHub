@@ -18,11 +18,19 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       secretOrKey: config.get('JWT_SECRET'),
     });
   }
+<<<<<<< HEAD
   async validate(payload: { sub: number; email: string }) {
     const user = await this.userRepo.findOneBy({
       id: payload.sub,
     });
     delete user.password
+=======
+  async validate(payload: { sub: string; email: string }) {
+    const user = await this.userRepo.findOneBy({
+      id: payload.sub,
+    });
+
+>>>>>>> development
     return user;
   }
 }

@@ -1,8 +1,11 @@
 import {
   Body,
   Controller,
+<<<<<<< HEAD
   HttpCode,
   HttpStatus,
+=======
+>>>>>>> development
   Post,
   UploadedFile,
   UseInterceptors,
@@ -108,4 +111,15 @@ export class AuthController {
     dto.avater = avater.filename;
     return this.authService.singUp(dto, 'admin');
   }
+<<<<<<< HEAD
+=======
+  @Post('/logout')
+  logout() {
+    return this.authService.logout();
+  }
+  @Post('/refresh')
+  refreshTokens() {
+    return this.authService.refreshTokens();
+  }
+>>>>>>> development
 }

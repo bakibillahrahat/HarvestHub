@@ -7,6 +7,10 @@ import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { AuthDto } from './dto';
 import { ConfigService } from '@nestjs/config';
+<<<<<<< HEAD
+=======
+import * as jwt from 'jsonwebtoken';
+>>>>>>> development
 
 @Injectable()
 export class AuthService {
@@ -15,11 +19,29 @@ export class AuthService {
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
+<<<<<<< HEAD
+=======
+  private readonly secretKey: string = this.config.get('JWT_SECRET');
+  private readonly blacklist: Set<string> = new Set();
+>>>>>>> development
   async singUp(dto: Userdto, role: string) {
     const password = dto.password;
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
+<<<<<<< HEAD
     const id = Math.floor(Math.random() * 1000);
+=======
+    let id = '';
+    if (role === 'admin') {
+      id = `admin_${Math.floor(Math.random() * 100)}`;
+    } else if (role === 'manager') {
+      id = `manager_${Math.floor(Math.random() * 200)}`;
+    } else if (role === 'customer') {
+      id = `customer_${Math.floor(Math.random() * 200)}`;
+    } else if (role === 'seller') {
+      id = `seller_${Math.floor(Math.random() * 200)}`;
+    }
+>>>>>>> development
 
     try {
       const data = {
@@ -57,7 +79,11 @@ export class AuthService {
     return this.signToken((await user).id, (await user).email);
   }
   async signToken(
+<<<<<<< HEAD
     userId: number,
+=======
+    userId: string,
+>>>>>>> development
     email: string,
   ): Promise<{ access_token: string }> {
     const payload = {
@@ -75,4 +101,10 @@ export class AuthService {
       access_token: token,
     };
   }
+<<<<<<< HEAD
+=======
+
+  async logout() {}
+  async refreshTokens() {}
+>>>>>>> development
 }
