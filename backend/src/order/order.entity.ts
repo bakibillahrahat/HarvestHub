@@ -1,7 +1,7 @@
 // order.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Product } from '../product/product.entity';
 import { User } from '../user/user.entity';
-
 
 @Entity()
 export class Order {
