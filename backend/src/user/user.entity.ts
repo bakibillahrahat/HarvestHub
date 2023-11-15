@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import {Order} from '../order/order.entity';
+// import {Order} from '../order/order.entity';
 
 @Entity('user')
 // @Unique(['username', 'email', 'phone'])
@@ -36,6 +36,6 @@ export class UserEntity {
   createdAt: Date;
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-  @OneToMany(() => Order, (order) => order.user)
-  orders: Order[];
+  // @OneToMany(() => Order, (order) => order.user)
+  // orders: Order[];
 }
