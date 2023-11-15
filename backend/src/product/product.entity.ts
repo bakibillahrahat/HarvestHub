@@ -1,20 +1,16 @@
-// // product.entity.ts
-// import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-// import { Order } from '../order/order.entity';
+// product.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
-// @Entity()
-// export class Product {
-//   @PrimaryGeneratedColumn()
-//   id: number;
+@Entity()
+export class Product {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-//   @Column()
-//   name: string;
+  @Column()
+  name: string;
 
-//   @Column()
-//   price: number;
-//   @Column()
-//   description: string;
-
-//   @OneToMany(() => Order, (order) => order.product)
-//   orders: Order[];
-// }
+  @Column()
+  price: number;
+  @Column()
+  description: string;
+}
