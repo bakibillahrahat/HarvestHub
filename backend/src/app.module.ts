@@ -7,15 +7,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
-import { OrderService } from './order/order.service';
-import { OrderController } from './order/order.controller';
 import { OrderModule } from './order/order.module';
-import { InventoryTsService } from './inventory.ts/inventory.ts.service';
-import { InventoryTsController } from './inventory.ts/inventory.ts.controller';
-import { InventoryTsModule } from './inventory.ts/inventory.ts.module';
-import { TransactionsTsService } from './transactions.ts/transactions.ts.service';
-import { TransactionTsController } from './transaction.ts/transaction.ts.controller';
-import { TransactionTsModule } from './transaction.ts/transaction.ts.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -34,10 +27,9 @@ import { TransactionTsModule } from './transaction.ts/transaction.ts.module';
     ConfigModule.forRoot({ isGlobal: true }),
     ProductModule,
     OrderModule,
-    InventoryTsModule,
-    TransactionTsModule,
+    TransactionModule,
   ],
-  controllers: [AppController, OrderController, InventoryTsController, TransactionTsController],
-  providers: [AppService, OrderService, InventoryTsService, TransactionsTsService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

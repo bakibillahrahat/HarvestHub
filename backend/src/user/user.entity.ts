@@ -1,4 +1,3 @@
-import { ProductEntity } from 'src/product/product.entity';
 import {
   Column,
   CreateDateColumn,
