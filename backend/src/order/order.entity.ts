@@ -1,24 +1,19 @@
-// // order.entity.ts
-// import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { UserEntity } from 'src/user/user.entity';
+import { Entity, Column, ManyToOne, PrimaryColumn, OneToMany } from 'typeorm';
+import { OrderItemEntity } from './order-item.entity';
 
+@Entity('order')
+export class OrderEntity {
+  @PrimaryColumn()
+  id: string;
+  @Column()
+  orderNumber: string;
+  @Column()
+  orderDate: Date;
 
-// @Entity()
-// export class Order {
-//   @PrimaryGeneratedColumn()
-//   id: number;
+  @ManyToOne(() => UserEntity, (user) => user.orders)
+  user: UserEntity;
 
-//   @Column()
-//   orderDate: Date;
-
-//   @ManyToOne(() => User, (user) => user.orders)
-//   user: User;
-
-//   @ManyToOne(() => Product, (product) => product.orders)
-//   product: Product;
-
-//   @Column()
-//   quantity: number;
-
-//   @Column()
-//   totalAmount: number;
-// }
+  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.order)
+  orderItems: OrderItemEntity[];
+}
