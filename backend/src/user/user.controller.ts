@@ -25,7 +25,7 @@ export class UserController {
     return user;
   }
   @Put('edituser/:id')
-  editUser(@Param('id') id: number, @Body() dto: EditUserDto) {
+  editUser(@Param('id') id: string, @Body() dto: EditUserDto) {
     return this.userService.editUser(id, dto);
   }
   @Delete('/:id')

@@ -1,25 +1,52 @@
 import { Injectable } from '@nestjs/common';
-import { ProducerInfo } from './producer.dto';
+import { UserEntity } from 'src/user/user.entity';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AdminService {
-  getHello(): string {
-    return 'Show All Product Producers!';
+  constructor(private userservice: UserService) {}
+  async getMe(user) {
+    const userdata = user;
+    delete userdata['password'];
+    delete userdata['role'];
+    delete userdata['createdAt'];
+    delete userdata['updatedAt'];
+    return userdata;
   }
-  addProducer(producerInfo: ProducerInfo): object {
-    return {
-      id: producerInfo.id,
-      name: producerInfo.name,
-      email: producerInfo.email,
-    };
+  async allUsers(): Promise<UserEntity[] | { message: string }> {
+    const userData = await this.userservice.allUser();
+    const users = userData.filter((user) => user.role !== 'admin');
+
+    if (users.length === 0) {
+      return { message: 'There are no users!' };
+    }
+    return users;
   }
-  searchProducer(name: string, id: number): object {
-    return { userid: id, nusername: name };
+  async allManagers(): Promise<UserEntity[] | { message: string }> {
+    const userData = await this.userservice.allUser();
+    const users = userData.filter((user) => user.role === 'manager');
+
+    if (users.length === 0) {
+      return { message: 'There are no Manager!' };
+    }
+    return users;
   }
-  updateProducer(id): string {
-    return `User id ${id} updated`;
+  async allSellers(): Promise<UserEntity[] | { message: string }> {
+    const userData = await this.userservice.allUser();
+    const users = userData.filter((user) => user.role === 'seller');
+
+    if (users.length === 0) {
+      return { message: 'There are no Seller!' };
+    }
+    return users;
   }
-  deleteProducer(id): string {
-    return `User id ${id} Deleted`;
+  async allCustomers(): Promise<UserEntity[] | { message: string }> {
+    const userData = await this.userservice.allUser();
+    const users = userData.filter((user) => user.role === 'customer');
+
+    if (users.length === 0) {
+      return { message: 'There are no Customer!' };
+    }
+    return users;
   }
 }

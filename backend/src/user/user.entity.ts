@@ -1,3 +1,4 @@
+import { ProductEntity } from 'src/product/product.entity';
 import {
   Column,
   CreateDateColumn,
@@ -7,7 +8,6 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-// import {Order} from '../order/order.entity';
 
 @Entity('user')
 // @Unique(['username', 'email', 'phone'])
@@ -38,4 +38,6 @@ export class UserEntity {
   updatedAt: Date;
   // @OneToMany(() => Order, (order) => order.user)
   // orders: Order[];
+  // @OneToMany(() => ProductEntity, (product) => product.seller)
+  // products: ProductEntity[];
 }
