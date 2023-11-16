@@ -1,6 +1,7 @@
 import { UserEntity } from 'src/user/user.entity';
 import { Entity, Column, ManyToOne, PrimaryColumn, OneToMany } from 'typeorm';
 import { OrderItemEntity } from './order-item.entity';
+import { TransactionEntity } from 'src/transaction/transaction.entity';
 
 @Entity('order')
 export class OrderEntity {
@@ -16,4 +17,6 @@ export class OrderEntity {
 
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.order)
   orderItems: OrderItemEntity[];
+  @OneToMany(() => TransactionEntity, (transaction) => transaction.order)
+  transactions: TransactionEntity[];
 }
