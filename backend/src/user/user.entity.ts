@@ -1,4 +1,5 @@
 import { OrderEntity } from 'src/order/order.entity';
+import { ProductEntity } from 'src/product/product.entity';
 import {
   Column,
   CreateDateColumn,
@@ -38,6 +39,6 @@ export class UserEntity {
   updatedAt: Date;
   @OneToMany(() => OrderEntity, (order) => order.user)
   orders: OrderEntity[];
-  // @OneToMany(() => ProductEntity, (product) => product.seller)
-  // products: ProductEntity[];
+  @OneToMany(() => ProductEntity, (product) => product.seller)
+  products: ProductEntity[];
 }

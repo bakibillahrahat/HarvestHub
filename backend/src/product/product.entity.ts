@@ -1,5 +1,6 @@
 import { InventoryEntity } from 'src/inventory/inventory.entity';
 import { OrderItemEntity } from 'src/order/order-item.entity';
+import { UserEntity } from 'src/user/user.entity';
 import {
   Entity,
   Column,
@@ -20,12 +21,12 @@ export class ProductEntity {
   @Column()
   description: string;
   @Column()
-  productimage: string;
+  productImage: string;
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product)
   orderItems: ProductEntity[];
 
   @OneToOne(() => InventoryEntity, (inventory) => inventory.product)
   inventory: InventoryEntity;
-  // @ManyToOne(() => UserEntity, (seller) => seller.products)
-  // seller: UserEntity;
+  @ManyToOne(() => UserEntity, (seller) => seller.products)
+  seller: UserEntity;
 }

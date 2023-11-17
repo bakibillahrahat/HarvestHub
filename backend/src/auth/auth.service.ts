@@ -7,7 +7,6 @@ import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { AuthDto } from './dto';
 import { ConfigService } from '@nestjs/config';
-import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
