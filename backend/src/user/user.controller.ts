@@ -21,7 +21,7 @@ export class UserController {
   }
   @Get('/:id')
   searchUserBy(@Param('id') userID: string): Promise<UserEntity> {
-    let user = this.userService.getUserByID(userID);
+    const user = this.userService.getUserByID(userID);
     return user;
   }
   @Put('edituser/:id')

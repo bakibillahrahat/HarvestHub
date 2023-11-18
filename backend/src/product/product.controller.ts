@@ -8,10 +8,14 @@ import {
   ValidationPipe,
   UseInterceptors,
   UploadedFile,
+  Param,
+  Put,
+  Delete,
+  ForbiddenException,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { ProductService } from './product.service';
-import { ProductDto } from './dto';
+import { EditProductDto, ProductDto } from './dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterError, diskStorage } from 'multer';
 
@@ -20,8 +24,20 @@ import { MulterError, diskStorage } from 'multer';
 export class ProductController {
   constructor(private productservice: ProductService) {}
   @Get('viewproducts')
-  allProduct() {
-    return this.productservice.findAll();
+  async allProduct() {
+    const products = this.productservice.findAll();
+    if ((await products).length === 0) {
+      throw new ForbiddenException('There are no product!');
+    }
+    return products;
+  }
+  @Get('/:id')
+  getUserById(@Param('id') productID: string) {
+    const product = this.productservice.findById(productID);
+    if (!product) {
+      throw new ForbiddenException('Product Not found!');
+    }
+    return product;
   }
   @Post('addproduct')
   @UsePipes(new ValidationPipe())
@@ -49,5 +65,13 @@ export class ProductController {
   ) {
     dto.productImage = productImage.filename;
     return this.productservice.addProduct(dto);
+  }
+  @Put('editproduct/:id')
+  editProduct(@Param('id') id: string, @Body() dto: EditProductDto) {
+    return this.productservice.editProduct(id, dto);
+  }
+  @Delete('/:id')
+  deleteProduct(@Param('id') id: string) {
+    return this.productservice.deleteProduct(id);
   }
 }

@@ -11,3 +11,16 @@ export class ProductDto {
   description: string;
   productImage: string;
 }
+
+export class EditProductDto {
+  @IsNotEmpty()
+  @IsString()
+  name?: string;
+  @IsNotEmpty()
+  @IsString()
+  price?: number;
+  @IsNotEmpty()
+  @IsString()
+  description?: string;
+  productImage?: string;
+}

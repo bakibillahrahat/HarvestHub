@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Body, ForbiddenException, Injectable } from '@nestjs/common';
 import { ProductEntity } from './product.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProductDto } from './dto';
+import { EditProductDto, ProductDto } from './dto';
 
 @Injectable()
 export class ProductService {
@@ -27,11 +27,25 @@ export class ProductService {
     return await this.productRepo.find();
   }
   // find product by product id
-  async findById(id) {
-    return this.productRepo.findOneBy(id);
+  async findById(id: string): Promise<ProductEntity> {
+    return this.productRepo.findOneBy({ id: id });
   }
   // update product info
-  async editProduct() {}
+  async editProduct(id: string, @Body() dto: EditProductDto): Promise<object> {
+    const product = await this.findById(id);
+    if (!product) {
+      throw new ForbiddenException('Product Not found!');
+    }
+    const updatedProduct = this.productRepo.update(id, dto);
+    return updatedProduct;
+  }
   // delete product
-  async deleteProduct() {}
+  async deleteProduct(id: string): Promise<object> {
+    const product = await this.findById(id);
+    if (!product) {
+      throw new ForbiddenException('Product Not found!');
+    }
+    await this.productRepo.delete(product['id']);
+    return { msg: 'Product Deleted Successfully!' };
+  }
 }
