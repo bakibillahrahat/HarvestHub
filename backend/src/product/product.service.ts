@@ -27,7 +27,9 @@ export class ProductService {
     return await this.productRepo.find();
   }
   // find product by product id
-  async findById() {}
+  async findById(id) {
+    return this.productRepo.findOneBy(id);
+  }
   // update product info
   async editProduct() {}
   // delete product
