@@ -10,6 +10,8 @@ export class ProductDto {
   @IsString()
   description: string;
   productImage: string;
+  @IsNotEmpty()
+  sellerId: string;
 }
 
 export class EditProductDto {

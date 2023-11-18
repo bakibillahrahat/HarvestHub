@@ -18,6 +18,7 @@ import { ProductService } from './product.service';
 import { EditProductDto, ProductDto } from './dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterError, diskStorage } from 'multer';
+import { ProductEntity } from './product.entity';
 
 @UseGuards(JwtGuard)
 @Controller('product')
