@@ -7,6 +7,7 @@ import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { AuthDto } from './dto';
 import { ConfigService } from '@nestjs/config';
+import { MailerService } from '@nestjs-modules/mailer/dist';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,7 @@ export class AuthService {
     @InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
     private jwt: JwtService,
     private config: ConfigService,
+    private mailobject: MailerService,
   ) {}
   private readonly secretKey: string = this.config.get('JWT_SECRET');
   private readonly blacklist: Set<string> = new Set();
@@ -86,7 +88,11 @@ export class AuthService {
       access_token: token,
     };
   }
-
-  async logout() {}
-  async refreshTokens() {}
+  async sendEmail(email: string, name: string) {
+    return await this.mailobject.sendMail({
+      to: `${email}`,
+      subject: 'subject of email',
+      text: `Hello ${name}.Welcome to our system`,
+    });
+  }
 }

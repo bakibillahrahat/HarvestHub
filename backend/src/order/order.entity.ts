@@ -8,7 +8,7 @@ export class OrderEntity {
   @PrimaryColumn()
   id: string;
   @Column()
-  orderNumber: string;
+  orderNumber: number;
   @Column()
   orderDate: Date;
 

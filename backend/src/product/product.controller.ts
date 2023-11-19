@@ -39,6 +39,10 @@ export class ProductController {
     }
     return product;
   }
+  @Get('productsinventory/:id')
+  getInventory(@Param('id') productID: string) {
+    return this.productservice.getInventoryProduct(productID);
+  }
   @Post('addproduct')
   @UsePipes(new ValidationPipe())
   @UseInterceptors(

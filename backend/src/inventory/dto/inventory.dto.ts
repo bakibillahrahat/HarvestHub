@@ -1,7 +1,16 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class InventoryDto {
   @IsNotEmpty()
   @IsNumber()
-  stocklevel: number;
+  stockLevel: number;
+  @IsNotEmpty()
+  @IsString()
+  productid: string;
+}
+
+export class UpdateInventoryDto {
+  @IsNotEmpty()
+  @IsNumber()
+  stockLevel: number;
 }

@@ -25,7 +25,9 @@ export class ProductEntity {
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product)
   orderItems: ProductEntity[];
 
-  @OneToOne(() => InventoryEntity, (inventory) => inventory.product)
+  @OneToOne(() => InventoryEntity, (inventory) => inventory.product, {
+    onDelete: 'CASCADE',
+  })
   inventory: InventoryEntity;
   @ManyToOne(() => UserEntity, (seller) => seller.products, {
     onDelete: 'CASCADE',

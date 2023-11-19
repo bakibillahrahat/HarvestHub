@@ -7,7 +7,9 @@ export class InventoryEntity {
   id: string;
   @Column()
   stockLevel: number;
-  @OneToOne(() => ProductEntity, (product) => product.inventory)
+  @OneToOne(() => ProductEntity, (product) => product.inventory, {
+    cascade: true,
+  })
   @JoinColumn()
   product: ProductEntity;
 }

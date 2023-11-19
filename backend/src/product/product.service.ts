@@ -55,4 +55,11 @@ export class ProductService {
     await this.productRepo.delete(product['id']);
     return { msg: 'Product Deleted Successfully!' };
   }
+
+  async getInventoryProduct(id: string): Promise<ProductEntity[]> {
+    return this.productRepo.find({
+      where: { id: id },
+      relations: { inventory: true },
+    });
+  }
 }
