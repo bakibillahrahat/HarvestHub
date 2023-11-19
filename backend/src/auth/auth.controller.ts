@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Post,
+  Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
@@ -12,6 +14,7 @@ import { MulterError, diskStorage } from 'multer';
 import { AuthService } from './auth.service';
 import { Userdto } from 'src/user/dto';
 import { AuthDto } from './dto';
+
 
 @Controller('auth')
 export class AuthController {
@@ -78,7 +81,7 @@ export class AuthController {
     dto.avater = avater.filename;
     return this.authService.singUp(dto, 'seller');
   }
-  // admin
+
   @Post('admin/signup')
   @UsePipes(new ValidationPipe())
   @UseInterceptors(
@@ -105,13 +108,5 @@ export class AuthController {
   ) {
     dto.avater = avater.filename;
     return this.authService.singUp(dto, 'admin');
-  }
-  @Post('/logout')
-  logout() {
-    return this.authService.logout();
-  }
-  @Post('/refresh')
-  refreshTokens() {
-    return this.authService.refreshTokens();
   }
 }

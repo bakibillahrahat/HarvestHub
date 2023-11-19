@@ -39,6 +39,8 @@ export class UserEntity {
   updatedAt: Date;
   @OneToMany(() => OrderEntity, (order) => order.user)
   orders: OrderEntity[];
-  @OneToMany(() => ProductEntity, (product) => product.seller)
+  @OneToMany(() => ProductEntity, (product) => product.seller, {
+    cascade: true,
+  })
   products: ProductEntity[];
 }

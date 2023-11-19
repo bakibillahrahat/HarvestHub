@@ -27,6 +27,8 @@ export class ProductEntity {
 
   @OneToOne(() => InventoryEntity, (inventory) => inventory.product)
   inventory: InventoryEntity;
-  @ManyToOne(() => UserEntity, (seller) => seller.products)
+  @ManyToOne(() => UserEntity, (seller) => seller.products, {
+    onDelete: 'CASCADE',
+  })
   seller: UserEntity;
 }

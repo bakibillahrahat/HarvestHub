@@ -1,4 +1,4 @@
-import { Body, ForbiddenException, Injectable, Param } from '@nestjs/common';
+import { Body, ForbiddenException, Injectable } from '@nestjs/common';
 import { EditUserDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
@@ -10,8 +10,8 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
   ) {}
-  async allUser(): Promise<UserEntity[]> {
-    return await this.userRepo.find({
+  async allUser(role: string): Promise<UserEntity[]> {
+    const users = await this.userRepo.find({
       select: {
         id: true,
         name: true,
@@ -25,11 +25,22 @@ export class UserService {
         updatedAt: true,
       },
     });
+    if (role === 'users') {
+      return users.filter((user) => user.role !== 'admin');
+    } else if (role === 'manager') {
+      return users.filter((user) => user.role === 'manager');
+    } else if (role === 'seller') {
+      return users.filter((user) => user.role === 'seller');
+    } else if (role === 'customer') {
+      return users.filter((user) => user.role === 'customer');
+    } else {
+      return users;
+    }
   }
 
   async getUserByID(id: string): Promise<UserEntity> {
     const user = this.userRepo.findOneBy({ id: id });
-    delete (await user).password;
+    if (!user) throw new ForbiddenException('No such user found!');
     return user;
   }
 
@@ -50,5 +61,14 @@ export class UserService {
     }
     await this.userRepo.delete(user['id']);
     return { msg: 'User Delete Successfully!' };
+  }
+
+  async getSellerProduct(id: string): Promise<UserEntity[]> {
+    return this.userRepo.find({
+      where: { id: id },
+      relations: {
+        products: true,
+      },
+    });
   }
 }
