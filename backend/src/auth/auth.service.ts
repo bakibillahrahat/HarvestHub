@@ -48,6 +48,8 @@ export class AuthService {
       };
 
       const user = this.userRepo.save(data);
+      this.sendEmail((await user).email, (await user).name);
+      console.log((await user).name, (await user).email);
       return this.signToken((await user).id, (await user).email);
     } catch (err) {
       if (err.code == 23505) {
@@ -90,8 +92,9 @@ export class AuthService {
   }
   async sendEmail(email: string, name: string) {
     return await this.mailobject.sendMail({
-      to: `${email}`,
-      subject: 'subject of email',
+      from: 'harvesthub5@gmail.com',
+      to: email,
+      subject: 'Welcoming message',
       text: `Hello ${name}.Welcome to our system`,
     });
   }

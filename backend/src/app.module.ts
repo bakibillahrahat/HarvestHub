@@ -10,7 +10,7 @@ import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { InventoryModule } from './inventory/inventory.module';
-
+import { MailerModule } from '@nestjs-modules/mailer';
 @Module({
   imports: [
     AuthModule,
@@ -24,6 +24,18 @@ import { InventoryModule } from './inventory/inventory.module';
       database: 'scms',
       autoLoadEntities: true,
       synchronize: true,
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 465,
+        ignoreTLS: true,
+        secure: true,
+        auth: {
+          user: 'harvesthub5@gmail.com',
+          pass: 'ajgu ihix bhis cwer',
+        },
+      },
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     ProductModule,
