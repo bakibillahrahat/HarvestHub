@@ -1,5 +1,12 @@
 import { UserEntity } from 'src/user/user.entity';
-import { Entity, Column, ManyToOne, PrimaryColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  PrimaryColumn,
+  OneToMany,
+  CreateDateColumn,
+} from 'typeorm';
 import { OrderItemEntity } from './order-item.entity';
 import { TransactionEntity } from 'src/transaction/transaction.entity';
 
@@ -7,11 +14,8 @@ import { TransactionEntity } from 'src/transaction/transaction.entity';
 export class OrderEntity {
   @PrimaryColumn()
   id: string;
-  @Column()
-  orderNumber: number;
-  @Column()
-  orderDate: Date;
-
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
   @ManyToOne(() => UserEntity, (user) => user.orders)
   user: UserEntity;
 
