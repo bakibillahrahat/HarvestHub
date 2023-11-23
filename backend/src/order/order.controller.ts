@@ -19,6 +19,7 @@ export class OrderController {
   createOrder(@Body() dto: OrderDto) {
     return this.orderservice.createOrder(dto);
   }
+  // checkout
   @Post('checkout')
   checkout(@Body() dto: OrderItemDto) {
     return this.orderservice.checkoutProduct(dto);
