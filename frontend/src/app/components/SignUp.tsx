@@ -34,7 +34,7 @@ const SignUp = () => {
             Sign in to Account
           </h2>
           <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
-          <div className="flex flex-wrap items-center">
+          <form className="flex flex-wrap items-center">
             <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
               <FaRegUser className="text-gray-400 m-2" />
               <input
@@ -112,7 +112,7 @@ const SignUp = () => {
               value="Sign Up"
               className="border-2 border-green-500 cursor-pointer rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white mx-auto"
             />
-          </div>
+          </form>
         </div>
       </div>
     </div>
