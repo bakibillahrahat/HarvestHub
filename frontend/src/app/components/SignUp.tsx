@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
@@ -7,6 +7,21 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
 
 const SignUp = () => {
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [avater, setAvater] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  const [formErrors, setFormErrors] = useState({
+    email: "",
+    password: "",
+  });
+  const [success, setSuccess] = useState(false);
+
   return (
     <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl">
       {/* Sign Up Page */}
@@ -65,12 +80,13 @@ const SignUp = () => {
             <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
               <FaRegEnvelope className="text-gray-400 m-2" />
               <input
-                type="number"
+                type="text"
                 name="phone"
                 placeholder="Phone Number: +880"
                 className="bg-gray-100 outline-none text-sm flex-1"
               />
             </div>
+
             <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
               <MdLockOutline className="text-gray-400 m-2" />
               <input

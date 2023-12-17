@@ -54,7 +54,7 @@ const SignIn = () => {
           password,
         });
         console.log("res: " + response.data);
-        // sessionStorage.setItem("email", response.data);
+        // sessionStorage.setItem("token", response.data);
         // router.push("/dashboard");
       } catch (err) {
         console.log("error22: " + err);
