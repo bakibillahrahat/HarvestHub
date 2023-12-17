@@ -22,6 +22,31 @@ const SignUp = () => {
   });
   const [success, setSuccess] = useState(false);
 
+  const validateForm = (): {
+    name?: string;
+    username?: string;
+    email?: string;
+    password?: string;
+    confirmpassword?: string;
+    phone?: string;
+    address?: string;
+    avater?: string;
+  } => {
+    const errors: {
+      name?: string;
+      username?: string;
+      email?: string;
+      password?: string;
+      confirmpassword?: string;
+      phone?: string;
+      address?: string;
+      avater?: string;
+    };
+    if(!name){
+      errors.name = "Name is Required",
+    }
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl">
       {/* Sign Up Page */}
