@@ -33,7 +33,8 @@ const SignUp = () => {
       errors.phone = "Phone number is required!";
     }else if(!address){
       errors.address = "Address is required!";
-    }else if()
+    }
+    
     if (!password) {
       errors.password = "Password is required";
     } else if (!/[A-Z]/.test(password)) {

@@ -2,62 +2,37 @@
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
 
 const SignIn = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [errMsg, setErrMsg] = useState<string>("");
-  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
-  const [success, setSuccess] = useState<boolean>(false);
-  // const router = useRouter();
 
-  const validateForm = (): { email?: string; password?: string } => {
-    const errors: { [key: string]: string } = {};
-    if (!email) {
-      errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Invalid email format";
+  const [cookies, setCookies] = useState([]);
+
+  const authLogic = handleSubmit((data) => {
+    if (data.remember === true) {
+      const authD = { email: data.email, password: data.password };
+      localStorage.setItem("cookies", JSON.stringify(authD));
+      setEmail(JSON.parse(localStorage.getItem("cookies")).email.toString());
+      setPassword(
+        JSON.parse(localStorage.getItem("cookies")).password.toString()
+      );
+    } else if (data.remember === false) {
+      localStorage.clear();
     }
-    if (!password) {
-      errors.password = "Password is required";
-    } else if (!/[A-Z]/.test(password)) {
-      errors.password = "At least one Capital Letter";
-    } else if (!/[a-z]/.test(password)) {
-      errors.password = "At least one Small Letter";
-    } else if (!/[0-9]/.test(password)) {
-      errors.password = "At least one Number";
-    }
-    return errors;
-  };
-
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    event.preventDefault();
-
-    // validate form before submitting
-    const errors = validateForm();
-    setFormErrors(errors);
-
-    if (Object.keys(errors).length === 0) {
-      try {
-        const response = await axios.post("http://localhost:3000/auth/signin", {
-          email,
-          password,
-        });
-        console.log("res: " + response.data);
-        // sessionStorage.setItem("token", response.data);
-        // router.push("/dashboard");
-      } catch (err) {
-        console.log("error22: " + err);
-        setErrMsg("invalid login");
-      }
-    }
-  };
+    console.log(data);
+  });
 
   return (
     <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl">
@@ -68,55 +43,66 @@ const SignIn = () => {
         </div>
         <div className="py-10">
           <Link href={"/"} className="flex text-green-500 text-lg mb-1">
-            <IoIosArrowBack className="m-1"/>
+            <IoIosArrowBack className="m-1" />
             Back
           </Link>
           <h2 className="text-3xl font-bold text-green-500 mb-2">
             Sign in to Account
           </h2>
           <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
-          <form onSubmit={handleSubmit} method="post">
+          <form onSubmit={authLogic} method="post">
             <div className="flex flex-col items-center">
-              <div
-                className={`bg-gray-100 w-64 p-2 flex items-center mb-3 $`}
-              >
+              <div className={`bg-gray-100 w-64 p-2 flex items-center mb-3 $`}>
                 <FaRegEnvelope className="text-gray-400 m-2" />
                 <input
+                  {...register("email", {
+                    required: "Email is required.",
+                    pattern: {
+                      value: /\S+@\S+\.\S+/,
+                      message: "Please provide valid email!",
+                    },
+                  })}
                   type="email"
                   name="email"
                   placeholder="Email"
-                  className={`bg-gray-100 outline-none text-sm flex-1 ${formErrors.email ? "border-red-500" : "border-gray-300"}`}
+                  className={`bg-gray-100 outline-none text-sm flex-1`}
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              {formErrors.email && (
-                <div className="text-red-500 text-sm">{formErrors.email}</div>
-              )}
-              
+              <div className="text-red-500 text-sm">
+                {errors.email?.message?.toString()}
+              </div>
+
               <div className="bg-gray-100 w-64 p-2 flex items-center mb-3">
                 <MdLockOutline className="text-gray-400 m-2" />
                 <input
+                  {...register("password", {
+                    required: "Password is required.",
+                    pattern: {
+                      value:
+                        /^(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{4,60}$/,
+                      message:
+                        "Password should contain capital letter, small letter, number & special char",
+                    },
+                  })}
                   type="password"
                   name="password"
                   placeholder="Password"
-                  className={`bg-gray-100 outline-none text-sm flex-1 ${
-                    formErrors.password ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`bg-gray-100 outline-none text-sm flex-1 `}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              {formErrors.password && (
-                <div className="text-red-500 text-sm">{formErrors.password}</div>
-              )}
+              <div className="text-red-500 text-sm">
+                {errors.password?.message?.toString()}
+              </div>
+
               <div className="flex justify-between w-64 mb-5">
                 <label htmlFor="" className="flex items-center text-xs">
                   <input
                     type="checkbox"
-                    name="remember"
                     id="remember"
                     className="mr-1"
+                    {...register("remember")}
                   />
                   Remember Me
                 </label>
@@ -132,16 +118,6 @@ const SignIn = () => {
               </button>
             </div>
           </form>
-          {errMsg && (
-            <div className="mx-auto text-center mt-7">
-              <p
-                id="outlined_error_help"
-                className="mt-2 text-large text-red-600 dark:text-red-400"
-              >
-                <span className="font-medium">{errMsg.toUpperCase()}</span>
-              </p>
-            </div>
-          )}
         </div>
       </div>
       {/* Sign Up Page */}
