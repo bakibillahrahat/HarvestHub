@@ -8,18 +8,15 @@ import { MdLockOutline } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errMsg, setErrMsg] = useState("");
-  const [formErrors, setFormErrors] = useState({
-    email: "",
-    password: "",
-  });
-  const [success, setSuccess] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errMsg, setErrMsg] = useState<string>("");
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
+  const [success, setSuccess] = useState<boolean>(false);
   // const router = useRouter();
 
   const validateForm = (): { email?: string; password?: string } => {
-    const errors: { email?: string; password?: string } = {};
+    const errors: { [key: string]: string } = {};
     if (!email) {
       errors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
@@ -43,7 +40,7 @@ const SignIn = () => {
     event.preventDefault();
 
     // validate form before submitting
-    const errors: { email?: string; pass?: string } = validateForm();
+    const errors = validateForm();
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
@@ -81,20 +78,22 @@ const SignIn = () => {
           <form onSubmit={handleSubmit} method="post">
             <div className="flex flex-col items-center">
               <div
-                className={`bg-gray-100 w-64 p-2 flex items-center mb-3 ${
-                  formErrors.email ? "border-red-500" : "border-gray-100"
-                }`}
+                className={`bg-gray-100 w-64 p-2 flex items-center mb-3 $`}
               >
                 <FaRegEnvelope className="text-gray-400 m-2" />
                 <input
                   type="email"
                   name="email"
                   placeholder="Email"
-                  className={`bg-gray-100 outline-none text-sm flex-1`}
+                  className={`bg-gray-100 outline-none text-sm flex-1 ${formErrors.email ? "border-red-500" : "border-gray-300"}`}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
+              {formErrors.email && (
+                <div className="text-red-500 text-sm">{formErrors.email}</div>
+              )}
+              
               <div className="bg-gray-100 w-64 p-2 flex items-center mb-3">
                 <MdLockOutline className="text-gray-400 m-2" />
                 <input
@@ -108,6 +107,9 @@ const SignIn = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
+              {formErrors.password && (
+                <div className="text-red-500 text-sm">{formErrors.password}</div>
+              )}
               <div className="flex justify-between w-64 mb-5">
                 <label htmlFor="" className="flex items-center text-xs">
                   <input
