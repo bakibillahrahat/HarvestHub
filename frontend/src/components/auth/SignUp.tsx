@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaRegEnvelope } from "react-icons/fa";
@@ -5,6 +6,7 @@ import { MdLockOutline } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
+import { IoIosArrowBack } from "react-icons/io";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -22,42 +24,46 @@ const SignUp = () => {
   });
   const [success, setSuccess] = useState(false);
 
-  const validateForm = (): {
-    name?: string;
-    username?: string;
-    email?: string;
-    password?: string;
-    confirmpassword?: string;
-    phone?: string;
-    address?: string;
-    avater?: string;
-  } => {
-    const errors: {
-      name?: string;
-      username?: string;
-      email?: string;
-      password?: string;
-      confirmpassword?: string;
-      phone?: string;
-      address?: string;
-      avater?: string;
-    };
-    if(!name){
-      errors.name = "Name is Required",
-    }
-  };
+  // const validateForm = (): {
+  //   name?: string;
+  //   username?: string;
+  //   email?: string;
+  //   password?: string;
+  //   confirmpassword?: string;
+  //   phone?: string;
+  //   address?: string;
+  //   avater?: string;
+  // } => {
+  //   const errors: {
+  //     name?: string;
+  //     username?: string;
+  //     email?: string;
+  //     password?: string;
+  //     confirmpassword?: string;
+  //     phone?: string;
+  //     address?: string;
+  //     avater?: string;
+  //   };
+  //   if(!name){
+  //     errors.name = "Name is Required",
+  //   }
+  // };
 
   return (
     <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl">
       {/* Sign Up Page */}
       <div className="w-2/5 bg-green-500 text-white rounded-tl-2xl rounded-bl-2xl py-36 px-12">
+      <Link href={"/"} className="flex text-white text-lg mb-1 -ml-1 -mt-4">
+            <IoIosArrowBack className="m-1"/>
+            Back
+          </Link>
         <h2 className="text-2xl font-bold mb-2">Already Have Account!</h2>
         <div className="border-2 w-10 text-white inline-block mb-2"></div>
         <p className="mb-10">
           Fill up personal email and password for login the system.
         </p>
         <Link
-          href="/signin"
+          href="/sign-in"
           className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-green-500 transition-colors duration-75"
         >
           Sign In

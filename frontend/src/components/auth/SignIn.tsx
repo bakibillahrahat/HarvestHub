@@ -1,12 +1,11 @@
 "use client";
-
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
-
+import { IoIosArrowBack } from "react-icons/io";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -71,6 +70,10 @@ const SignIn = () => {
           <span className="text-green-500">Harvest </span>Hub
         </div>
         <div className="py-10">
+          <Link href={"/"} className="flex text-green-500 text-lg mb-1">
+            <IoIosArrowBack className="m-1"/>
+            Back
+          </Link>
           <h2 className="text-3xl font-bold text-green-500 mb-2">
             Sign in to Account
           </h2>
@@ -147,7 +150,7 @@ const SignIn = () => {
           Fill up personal information and start journey with us.
         </p>
         <Link
-          href="/signup"
+          href="/sign-up"
           className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-white hover:text-green-500 transition-colors duration-75"
         >
           Sign Up
