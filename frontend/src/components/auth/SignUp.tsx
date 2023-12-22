@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
@@ -21,38 +22,19 @@ const SignUp = () => {
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [success, setSuccess] = useState<boolean>(false);
 
-  const validateForm = () => {
-    const errors: { [key: string]: string } = {};
-    if (!name) {
-      errors.name = "Name is required";
-    } else if (!username) {
-      errors.username = "Username is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Invalid email format";
-    }else if(!phone){
-      errors.phone = "Phone number is required!";
-    }else if(!address){
-      errors.address = "Address is required!";
-    }
-    
-    if (!password) {
-      errors.password = "Password is required";
-    } else if (!/[A-Z]/.test(password)) {
-      errors.password = "At least one Capital Letter";
-    } else if (!/[a-z]/.test(password)) {
-      errors.password = "At least one Small Letter";
-    } else if (!/[0-9]/.test(password)) {
-      errors.password = "At least one Number";
-    }
-    if (!confirmPassword) {
-      errors.confirmpassword = "Confirm Password is required";
-    }
-    if (password !== confirmPassword) {
-      errors.confirmpassword = "Password & confirm-Password not Matched";
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
 
-    return errors;
-  };
+  const pass = watch("password");
+
+  const authLogic = handleSubmit((data) => {
+    console.log(data);
+    console.log(errors);
+  });
 
   return (
     <div className="bg-white rounded-2xl shadow-2xl flex w-2/3 max-w-4xl">
@@ -85,85 +67,144 @@ const SignUp = () => {
             Sign in to Account
           </h2>
           <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
-          <form className="flex flex-wrap items-center">
-            <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
-              <FaRegUser className="text-gray-400 m-2" />
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                className="bg-gray-100 outline-none text-sm flex-1"
-              />
+          <form className="flex flex-wrap items-center" onSubmit={authLogic}>
+            <div>
+              <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
+                <FaRegUser className="text-gray-400 m-2" />
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="bg-gray-100 outline-none text-sm flex-1"
+                  {...register("name", { required: "Name is required" })}
+                />
+              </div>
+              <div className="text-red-500 text-sm ml-2">
+                {errors.name?.message?.toString()}
+              </div>
             </div>
-            <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
-              <FaRegUserCircle className="text-gray-400 m-2" />
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                className="bg-gray-100 outline-none text-sm flex-1"
-              />
+            <div>
+              <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
+                <FaRegUserCircle className="text-gray-400 m-2" />
+                <input
+                  type="text"
+                  {...register("username", {
+                    required: "Username is required",
+                  })}
+                  placeholder="Username"
+                  className="bg-gray-100 outline-none text-sm flex-1"
+                />
+              </div>
+              <div className="text-red-500 text-sm ml-2">
+                {errors.username?.message?.toString()}
+              </div>
             </div>
-            <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
-              <FaRegEnvelope className="text-gray-400 m-2" />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                className="bg-gray-100 outline-none text-sm flex-1"
-              />
+            <div>
+              <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
+                <FaRegEnvelope className="text-gray-400 m-2" />
+                <input
+                  type="email"
+                  {...register("email", {
+                    required: "Email is required.",
+                    pattern: {
+                      value: /\S+@\S+\.\S+/,
+                      message: "Please provide valid email!",
+                    },
+                  })}
+                  placeholder="Email"
+                  className="bg-gray-100 outline-none text-sm flex-1"
+                />
+              </div>
+              <div className="text-red-500 text-sm ml-2">
+                {errors.email?.message?.toString()}
+              </div>
             </div>
-            <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
-              <FaRegEnvelope className="text-gray-400 m-2" />
-              <input
-                type="text"
-                name="phone"
-                placeholder="Phone Number: +880"
-                className="bg-gray-100 outline-none text-sm flex-1"
-              />
+            <div>
+              <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
+                <FaRegEnvelope className="text-gray-400 m-2" />
+                <input
+                  type="text"
+                  {...register("phone", {
+                    required: "Phone number is required",
+                  })}
+                  placeholder="Phone Number: +880"
+                  className="bg-gray-100 outline-none text-sm flex-1"
+                />
+              </div>
+              <div className="text-red-500 text-sm ml-2">
+                {errors.phone?.message?.toString()}
+              </div>
+            </div>
+            <div>
+              <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
+                <MdLockOutline className="text-gray-400 m-2" />
+                <input
+                  type="password"
+                  {...register("password", {
+                    required: "Password is required.",
+                    pattern: {
+                      value:
+                        /^(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{4,60}$/,
+                      message:
+                        "Password should contain capital letter, small letter, number & special char",
+                    },
+                  })}
+                  placeholder="Password"
+                  className="bg-gray-100 outline-none text-sm flex-1"
+                />
+              </div>
+              <div className="text-red-500 text-sm">
+                {errors.password?.message?.toString()}
+              </div>
+            </div>
+            <div>
+              <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
+                <MdLockOutline className="text-gray-400 m-2" />
+                <input
+                  type="password"
+                  {...register("confirmpassword", {
+                    required: "Confirm-password is required!",
+                    validate: value => value === pass || "The passwords do not match"
+                  })}
+                  placeholder="Confirm Password"
+                  className="bg-gray-100 outline-none text-sm flex-1"
+                />
+              </div>
+              <div className="text-red-500 text-sm">
+                {errors.confirmpassword?.message?.toString()}
+              </div>
+            </div>
+            <div>
+              {" "}
+              <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
+                <MdLockOutline className="text-gray-400 m-2" />
+                <input
+                  type="text"
+                  {...register("address", { required: "Address is required" })}
+                  placeholder="Address"
+                  className="bg-gray-100 outline-none text-sm flex-1"
+                />
+              </div>
+              <div className="text-red-500 text-sm">
+                {errors.address?.message?.toString()}
+              </div>
+            </div>
+            <div>
+              <div className="bg-gray-100 w-56 m-2 p-2 flex items-center flex-around">
+                <FaUser className="text-gray-400 m-2" />
+                <input
+                  type="file"
+                  {...register("avater", { required: "Avater is required" })}
+                  className="block bg-gray-100 border-gray-400 outline-none text-sm flex-1"
+                />
+              </div>
             </div>
 
-            <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
-              <MdLockOutline className="text-gray-400 m-2" />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="bg-gray-100 outline-none text-sm flex-1"
-              />
-            </div>
-            <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
-              <MdLockOutline className="text-gray-400 m-2" />
-              <input
-                type="password"
-                name="confirm_password"
-                placeholder="Confirm Password"
-                className="bg-gray-100 outline-none text-sm flex-1"
-              />
-            </div>
-            <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
-              <MdLockOutline className="text-gray-400 m-2" />
-              <input
-                type="text"
-                name="address"
-                placeholder="Address"
-                className="bg-gray-100 outline-none text-sm flex-1"
-              />
-            </div>
-            <div className="bg-gray-100 w-56 m-2 p-2 flex items-center flex-around">
-              <FaUser className="text-gray-400 m-2" />
-              <input
-                type="file"
-                name="avatar"
-                className="block bg-gray-100 border-gray-400 outline-none text-sm flex-1"
-              />
-            </div>
-
-            <input
-              type="button"
-              value="Sign Up"
-              className="border-2 border-green-500 cursor-pointer rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white mx-auto"
-            />
+            <button
+              type="submit"
+              className="border-2 border-green-500 cursor-pointer rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white"
+            >
+              Sign Up
+            </button>
           </form>
         </div>
       </div>
