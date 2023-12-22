@@ -152,7 +152,7 @@ const SignUp = () => {
                   className="bg-gray-100 outline-none text-sm flex-1"
                 />
               </div>
-              <div className="text-red-500 text-sm">
+              <div className="text-red-500 text-sm ml-2">
                 {errors.password?.message?.toString()}
               </div>
             </div>
@@ -163,13 +163,14 @@ const SignUp = () => {
                   type="password"
                   {...register("confirmpassword", {
                     required: "Confirm-password is required!",
-                    validate: value => value === pass || "The passwords do not match"
+                    validate: (value) =>
+                      value === pass || "The passwords do not match",
                   })}
                   placeholder="Confirm Password"
                   className="bg-gray-100 outline-none text-sm flex-1"
                 />
               </div>
-              <div className="text-red-500 text-sm">
+              <div className="text-red-500 text-sm ml-2">
                 {errors.confirmpassword?.message?.toString()}
               </div>
             </div>
@@ -184,7 +185,7 @@ const SignUp = () => {
                   className="bg-gray-100 outline-none text-sm flex-1"
                 />
               </div>
-              <div className="text-red-500 text-sm">
+              <div className="text-red-500 text-sm ml-2">
                 {errors.address?.message?.toString()}
               </div>
             </div>
@@ -193,15 +194,27 @@ const SignUp = () => {
                 <FaUser className="text-gray-400 m-2" />
                 <input
                   type="file"
-                  {...register("avater", { required: "Avater is required" })}
+                  {...register("avatar", {
+                    validate: {
+                      acceptedFormats: (files) =>
+                        ["image/jpeg", "image/png", "image/gif"].includes(
+                          files[0]?.type
+                        ) || "Only PNG, JPEG e GIF",
+                      lessThan10MB: (files) =>
+                        files[0]?.size < 1000000 || "Max 10Mb",
+                    },
+                  })}
                   className="block bg-gray-100 border-gray-400 outline-none text-sm flex-1"
                 />
+              </div>
+              <div className="text-red-500 text-sm ml-2">
+                {errors.avatar?.message?.toString()}
               </div>
             </div>
 
             <button
               type="submit"
-              className="border-2 border-green-500 cursor-pointer rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white"
+              className="mx-auto mt-2 border-2 border-green-500 cursor-pointer rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white"
             >
               Sign Up
             </button>
