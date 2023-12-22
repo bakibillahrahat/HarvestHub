@@ -9,7 +9,7 @@ import { FaRegUser } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
 import { IoIosArrowBack } from "react-icons/io";
-
+import api from "@/api/api";
 const SignUp = () => {
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
@@ -32,6 +32,19 @@ const SignUp = () => {
   const pass = watch("password");
 
   const authLogic = handleSubmit((data) => {
+    const userData = {
+      name: data.name,
+      username: data.username,
+      email: data.email,
+      password: data.password,
+      phone: data.phone,
+      address: data.address,
+      avatar: data.avatar,
+    };
+    api
+      .post("/auth/signup", userData)
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
     console.log(data);
     console.log(errors);
   });
@@ -201,7 +214,7 @@ const SignUp = () => {
                           files[0]?.type
                         ) || "Only PNG, JPEG e GIF",
                       lessThan10MB: (files) =>
-                        files[0]?.size < 1000000 || "Max 10Mb",
+                        files[0]?.size < 8000000 || "Max 8Mb",
                     },
                   })}
                   className="block bg-gray-100 border-gray-400 outline-none text-sm flex-1"

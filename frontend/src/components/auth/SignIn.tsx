@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -7,6 +7,8 @@ import { useState } from "react";
 import { FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
+import { getEnvironmentData } from "worker_threads";
+import api from "@/api/api";
 
 const SignIn = () => {
   const {
@@ -18,20 +20,32 @@ const SignIn = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const [cookies, setCookies] = useState([]);
+  // const api = process.env.API?.toString() + "/auth/signin";
 
   const authLogic = handleSubmit((data) => {
+    if (Object.keys(errors).length === 0) {
+      setEmail(data.email);
+      setPassword(data.password);
+      // try {
+      //   const response = axios.post("http:localhost:3001/sign-in", {
+      //     email,
+      //     password,
+      //   });
+      // } catch (error) {
+      //   console.log(error);
+      // }
+      api
+        .post("/auth/signin", { email, password })
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error));
+    }
     if (data.remember === true) {
       const authD = { email: data.email, password: data.password };
       localStorage.setItem("cookies", JSON.stringify(authD));
-      setEmail(JSON.parse(localStorage.getItem("cookies")).email.toString());
-      setPassword(
-        JSON.parse(localStorage.getItem("cookies")).password.toString()
-      );
     } else if (data.remember === false) {
       localStorage.clear();
     }
-    console.log(data);
+    // console.log(data);
   });
 
   return (
@@ -66,7 +80,13 @@ const SignIn = () => {
                   name="email"
                   placeholder="Email"
                   className={`bg-gray-100 outline-none text-sm flex-1`}
-                  value={email}
+                  value={
+                    JSON.parse(localStorage.getItem("cookies"))
+                      ? JSON.parse(
+                          localStorage.getItem("cookies")
+                        ).email.toString()
+                      : null
+                  }
                 />
               </div>
               <div className="text-red-500 text-sm">
@@ -89,7 +109,13 @@ const SignIn = () => {
                   name="password"
                   placeholder="Password"
                   className={`bg-gray-100 outline-none text-sm flex-1 `}
-                  value={password}
+                  value={
+                    JSON.parse(localStorage.getItem("cookies"))
+                      ? JSON.parse(
+                          localStorage.getItem("cookies")
+                        ).password.toString()
+                      : null
+                  }
                 />
               </div>
               <div className="text-red-500 text-sm">
