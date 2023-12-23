@@ -6,7 +6,7 @@ export class Userdto {
   name: string;
   @IsNotEmpty({ message: 'username cannot be empty' })
   @IsString({ message: 'username must be string' })
-  @Matches(/^@.{2,10}$/, { message: 'username contains special character.' })
+  // @Matches(/^@.{2,10}$/, { message: 'username contains special character.' })
   username: string;
   @IsNotEmpty({ message: 'Email cannot be empty' })
   @IsEmail()
@@ -35,7 +35,7 @@ export class EditUserDto {
   name?: string;
   @IsNotEmpty({ message: 'username cannot be empty' })
   @IsString({ message: 'username must be string' })
-  @Matches(/^@.{2,10}$/, { message: 'username contains special character.' })
+  // @Matches(/^@.{2,10}$/, { message: 'username contains special character.' })
   username?: string;
   @IsNotEmpty({ message: 'Email cannot be empty' })
   @IsEmail()

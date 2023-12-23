@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
-import { getEnvironmentData } from "worker_threads";
+
 import api from "@/api/api";
 
 const SignIn = () => {
@@ -19,24 +19,27 @@ const SignIn = () => {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-
+  const router = useRouter();
   // const api = process.env.API?.toString() + "/auth/signin";
 
   const authLogic = handleSubmit((data) => {
     if (Object.keys(errors).length === 0) {
       setEmail(data.email);
       setPassword(data.password);
-      // try {
-      //   const response = axios.post("http:localhost:3001/sign-in", {
-      //     email,
-      //     password,
-      //   });
-      // } catch (error) {
-      //   console.log(error);
-      // }
+
+      const authData = { email: data.email, password: data.password };
+      // authData.append("email", data.email);
+      // authData.append("password", data.password);
+
       api
-        .post("/auth/signin", { email, password })
-        .then((response) => console.log(response))
+        .post("/auth/signin", JSON.stringify(authData), {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((response) => {
+          console.log(response.data);
+          sessionStorage.setItem("token", response.data);
+          router.push("/dashboard");
+        })
         .catch((error) => console.log(error));
     }
     if (data.remember === true) {

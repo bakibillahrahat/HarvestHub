@@ -11,16 +11,7 @@ import { FaUser } from "react-icons/fa6";
 import { IoIosArrowBack } from "react-icons/io";
 import api from "@/api/api";
 const SignUp = () => {
-  const [name, setName] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
-  const [errMsg, setErrMsg] = useState("");
-  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
-  const [success, setSuccess] = useState<boolean>(false);
+  const [success, setSuccess] = useState<String>("");
 
   const {
     register,
@@ -32,20 +23,22 @@ const SignUp = () => {
   const pass = watch("password");
 
   const authLogic = handleSubmit((data) => {
-    const userData = {
-      name: data.name,
-      username: data.username,
-      email: data.email,
-      password: data.password,
-      phone: data.phone,
-      address: data.address,
-      avatar: data.avatar,
-    };
+    const userData = new FormData();
+    userData.append("name", data.name);
+    userData.append("username", data.username);
+    userData.append("email", data.email);
+    userData.append("password", data.password);
+    userData.append("phone", data.phone);
+    userData.append("address", data.address);
+    userData.append("avater", data.avatar[0]);
+
     api
-      .post("/auth/signup", userData)
+      .post("/auth/signup", userData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
       .then((response) => console.log(response))
       .catch((error) => console.log(error));
-    console.log(data);
+    setSuccess("Registration Successfull.")
     console.log(errors);
   });
 
@@ -233,6 +226,7 @@ const SignUp = () => {
             </button>
           </form>
         </div>
+        <div className="mx-auto text-green-500 txt-sm">{success}</div>
       </div>
     </div>
   );
