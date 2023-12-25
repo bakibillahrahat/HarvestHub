@@ -28,17 +28,18 @@ const SignIn = () => {
       setPassword(data.password);
 
       const authData = { email: data.email, password: data.password };
-      // authData.append("email", data.email);
-      // authData.append("password", data.password);
 
       api
         .post("/auth/signin", JSON.stringify(authData), {
           headers: { "Content-Type": "application/json" },
         })
         .then((response) => {
-          console.log(response.data);
-          sessionStorage.setItem("token", response.data);
-          router.push("/dashboard");
+          const token = response.data["access_token"];
+          const id = response.data["user_id"];
+          console.log(id);
+
+          sessionStorage.setItem("token", token);
+          router.push(`/admin/${id}`);
         })
         .catch((error) => console.log(error));
     }
