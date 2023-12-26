@@ -39,6 +39,7 @@ const SignIn = () => {
           console.log(id);
 
           sessionStorage.setItem("token", token);
+          sessionStorage.setItem("id", id)
           router.push(`/admin/${id}`);
         })
         .catch((error) => console.log(error));
