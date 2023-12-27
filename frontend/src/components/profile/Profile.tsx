@@ -1,15 +1,16 @@
 "use client";
 
-import { api, imgPath, sessionData } from "@/api/api";
+import { api, protector, sessionData } from "@/api/api";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import avater from "../../../../backend/upload/avater";
 import { FaEdit } from "react-icons/fa";
+import ProfileCard from "./ProfileCard";
 
 const Profile = () => {
   const [path, setPath] = useState("");
   const [data, setData] = useState({ key: String });
-
+  const [editProfile, setEditProfile] = useState(false);
+  protector()
   useEffect(() => {
     const token = sessionStorage.getItem("token")?.toString();
     const sData = sessionData(token);
@@ -35,7 +36,16 @@ const Profile = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="border shadow-sm w-4/12 p-10">
-        <button className="text-green-500">
+        <button
+          className="text-green-500"
+          onClick={() => {
+            if (!editProfile) {
+              setEditProfile(true);
+            } else {
+              setEditProfile(false);
+            }
+          }}
+        >
           <FaEdit />
         </button>
         <Image
@@ -48,24 +58,29 @@ const Profile = () => {
         <div className="text-gray-400 my-2 mx-auto text-center font-semibold">
           @{data?.username}
         </div>
-        <div className="text-gray-600 p-3 border-t text-center font-medium">
-          <div>
-            <span>Name: </span>
-            {data?.name}
+
+        {editProfile ? (
+          <ProfileCard />
+        ) : (
+          <div className="text-gray-600 p-3 border-t text-center font-medium">
+            <div>
+              <span>Name: </span>
+              {data?.name}
+            </div>
+            <div>
+              <span>Email: </span>
+              {data?.email}
+            </div>
+            <div>
+              <span>Phone: </span>
+              {data?.phone}
+            </div>
+            <div>
+              <span>Address: </span>
+              {data?.address}
+            </div>
           </div>
-          <div>
-            <span>Email: </span>
-            {data?.email}
-          </div>
-          <div>
-            <span>Phone: </span>
-            {data?.phone}
-          </div>
-          <div>
-            <span>Address: </span>
-            {data?.address}
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

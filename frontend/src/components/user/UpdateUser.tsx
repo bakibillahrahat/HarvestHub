@@ -21,7 +21,6 @@ const UpdateUser: React.FC<{ pdata: any }> = ({ pdata }) => {
     watch,
   } = useForm();
 
-  const pass = watch("password");
 
   const id = pdata?.id;
   const authLogic = handleSubmit((data) => {
@@ -30,7 +29,7 @@ const UpdateUser: React.FC<{ pdata: any }> = ({ pdata }) => {
     userData.append("email", data.email);
     userData.append("phone", data.phone);
     userData.append("address", data.address);
-
+    console.log(userData);
     const token = sessionStorage.getItem("token")?.toString();
     // console.log(id)
     api
@@ -56,8 +55,8 @@ const UpdateUser: React.FC<{ pdata: any }> = ({ pdata }) => {
               <FaRegUser className="text-gray-400 m-2" />
               <input
                 type="text"
+                placeholder={pdata?.name}
                 className="bg-gray-100 outline-none text-sm flex-1"
-                placeholder={pdata.name}
                 {...register("name", { required: "Name is required" })}
               />
             </div>
@@ -65,12 +64,12 @@ const UpdateUser: React.FC<{ pdata: any }> = ({ pdata }) => {
               {errors.name?.message?.toString()}
             </div>
           </div>
+
           <div>
             <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
               <FaRegEnvelope className="text-gray-400 m-2" />
               <input
                 type="email"
-                placeholder={pdata?.email}
                 {...register("email", {
                   required: "Email is required.",
                   pattern: {
@@ -78,6 +77,7 @@ const UpdateUser: React.FC<{ pdata: any }> = ({ pdata }) => {
                     message: "Please provide valid email!",
                   },
                 })}
+                placeholder={pdata?.email}
                 className="bg-gray-100 outline-none text-sm flex-1"
               />
             </div>
@@ -90,11 +90,10 @@ const UpdateUser: React.FC<{ pdata: any }> = ({ pdata }) => {
               <FaRegEnvelope className="text-gray-400 m-2" />
               <input
                 type="text"
-                placeholder={pdata?.phone}
                 {...register("phone", {
                   required: "Phone number is required",
                 })}
-                
+                placeholder={pdata?.phone}
                 className="bg-gray-100 outline-none text-sm flex-1"
               />
             </div>
@@ -102,15 +101,14 @@ const UpdateUser: React.FC<{ pdata: any }> = ({ pdata }) => {
               {errors.phone?.message?.toString()}
             </div>
           </div>
-
           <div>
             {" "}
             <div className="bg-gray-100 w-56 m-2 p-2 flex items-center mb-3">
               <MdLockOutline className="text-gray-400 m-2" />
               <input
                 type="text"
-                placeholder={pdata?.address}
                 {...register("address", { required: "Address is required" })}
+                placeholder={pdata?.address}
                 className="bg-gray-100 outline-none text-sm flex-1"
               />
             </div>
