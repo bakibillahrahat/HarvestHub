@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
+import { api, sessionData } from "@/api/api";
 
-import api from "@/api/api";
 
 const SignIn = () => {
   const {
@@ -35,12 +35,8 @@ const SignIn = () => {
         })
         .then((response) => {
           const token = response.data["access_token"];
-          const id = response.data["user_id"];
-          console.log(id);
-
           sessionStorage.setItem("token", token);
-          sessionStorage.setItem("id", id)
-          router.push(`/admin/${id}`);
+          router.push(`/admin`);
         })
         .catch((error) => console.log(error));
     }
@@ -50,7 +46,6 @@ const SignIn = () => {
     } else if (data.remember === false) {
       localStorage.clear();
     }
-    // console.log(data);
   });
 
   return (

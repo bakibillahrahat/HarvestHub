@@ -19,7 +19,7 @@ export class UserService {
         email: true,
         phone: true,
         address: true,
-        avater: true,
+        avater: false,
         role: true,
         createdAt: true,
         updatedAt: true,
@@ -45,10 +45,10 @@ export class UserService {
   }
 
   async editUser(id: string, @Body() dto: EditUserDto): Promise<object> {
-    const password = dto.password;
-    const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(password, salt);
-    dto.password = hashedPassword;
+    // const password = dto.password;
+    // const salt = await bcrypt.genSalt();
+    // const hashedPassword = await bcrypt.hash(password, salt);
+    // dto.password = hashedPassword;
 
     const user = this.userRepo.update(id, dto);
     return user;

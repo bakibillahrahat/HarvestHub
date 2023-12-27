@@ -1,6 +1,6 @@
 "use client";
 
-import api from "@/api/api";
+import { api, sessionData } from "@/api/api";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -12,17 +12,16 @@ import { HiOutlineCube } from "react-icons/hi";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { MdOutlineDashboard } from "react-icons/md";
 import { RiProductHuntLine } from "react-icons/ri";
-
-import { createContext } from "vm";
+import { useRouter } from "next/navigation";
 
 const SidebarNavigation = () => {
+  const router = useRouter();
   const path = usePathname();
   const [data, setData] = useState<Object>({});
-  const [rId, setRId] = useState("");
   useEffect(() => {
     const token = sessionStorage.getItem("token")?.toString();
-    const id = path.split("/")[2];
-    setRId(id);
+    const sData = sessionData(token);
+    const id = sData?.sub;
     api
       .get(`/admin/me/${id}`, {
         headers: {
@@ -39,12 +38,13 @@ const SidebarNavigation = () => {
   });
   const sessionKill = () => {
     sessionStorage.clear();
+    router.push("/sign-in");
   };
   return (
     <aside className="h-screen">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
-          <Link href={`/admin/${rId}`}>
+          <Link href={`/admin/`}>
             <div className="text-left font-bold">
               <span className="text-green-500">Harvest </span>Hub
             </div>
@@ -55,7 +55,7 @@ const SidebarNavigation = () => {
         </div>
         <ul className="flex-1 px-3 mt-5">
           <Link
-            href={`/admin/${rId}`}
+            href={`/admin/`}
             className="flex text-base hover:bg-green-100 text-gray-500  w-full rounded-md hover:text-green-500 py-3 px-2"
           >
             <div className="mr-2 ml-1 text-xl">
@@ -64,7 +64,7 @@ const SidebarNavigation = () => {
             <div className="ml-1">Dashboard</div>
           </Link>
           <Link
-            href={`/admin/${rId}/users`}
+            href={`/admin/users`}
             className="flex text-base hover:bg-green-100 text-gray-500  w-full rounded-md hover:text-green-500 py-3 px-2"
           >
             <div className="mr-2 ml-1 text-xl">
@@ -73,7 +73,7 @@ const SidebarNavigation = () => {
             <div className="ml-1">Users</div>
           </Link>
           <Link
-            href={`/admin/${rId}/products`}
+            href={`/admin/products`}
             className="flex text-base hover:bg-green-100 text-gray-500  w-full rounded-md hover:text-green-500 py-3 px-2"
           >
             <div className="mr-2 ml-1 text-xl">
@@ -82,7 +82,7 @@ const SidebarNavigation = () => {
             <div className="ml-1">Products</div>
           </Link>
           <Link
-            href={`/admin/${rId}/orders`}
+            href={`/admin/orders`}
             className="flex text-base hover:bg-green-100 text-gray-500  w-full rounded-md hover:text-green-500 py-3 px-2"
           >
             <div className="mr-2 ml-1 text-xl">
@@ -91,7 +91,7 @@ const SidebarNavigation = () => {
             <div className="ml-1">Orders</div>
           </Link>
           <Link
-            href={`/admin/${rId}/billings`}
+            href={`/admin/billings`}
             className="flex text-base hover:bg-green-100 text-gray-500  w-full rounded-md hover:text-green-500 py-3 px-2"
           >
             <div className="mr-2 ml-1 text-xl">
@@ -100,7 +100,7 @@ const SidebarNavigation = () => {
             <div className="ml-1">Billings</div>
           </Link>
         </ul>
-        <Link href={`/admin/${rId}/profile`}>
+        <Link href={`/admin/profile`}>
           <div className="border-t flex p-3 border-b">
             <button className="w-10 h-10 rounded-md bg-green-200 m-2">
               AD
@@ -112,13 +112,13 @@ const SidebarNavigation = () => {
           </div>
         </Link>
         <div className="p-3 m-auto">
-          <Link href={"/sign-in"} className="mx-auto flex" onClick={sessionKill}>
+          <button className="mx-auto flex" onClick={sessionKill}>
             <div className="p-2 text-xl font-semibold text-green-500 rounded-md bg-gray-100">
               <RiLogoutBoxLine />
             </div>
 
             <h4 className="m-2">Logout</h4>
-          </Link>
+          </button>
         </div>
       </nav>
     </aside>

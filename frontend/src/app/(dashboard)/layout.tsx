@@ -1,6 +1,8 @@
 import SidebarNavigation from "@/components/shared/SidebarNavigation";
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (

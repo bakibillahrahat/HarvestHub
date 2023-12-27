@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation';
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">

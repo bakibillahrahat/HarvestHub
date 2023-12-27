@@ -1,7 +1,7 @@
 "use client";
 
-import api from "@/api/api";
-import { usePathname, useRouter } from "next/navigation";
+import { api, sessionData } from "@/api/api";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const DashboardPage = () => {
@@ -9,12 +9,16 @@ const DashboardPage = () => {
   const [err, setErr] = useState("");
   const router = useRouter();
   const path = usePathname();
-  const id = path.split("/")[2];
-  // if(err !== ""){
-  //   router.push("/sign-in")
-  // }
+
+  const stoken = sessionStorage.getItem("token")
+  if(stoken === null){
+    redirect("/sign-in")
+  }
+
   useEffect(() => {
     const token = sessionStorage.getItem("token")?.toString();
+    const sData = sessionData(token);
+    const id = sData?.sub;
     api
       .get(`/admin/me/${id}`, {
         headers: {
@@ -23,7 +27,6 @@ const DashboardPage = () => {
       })
       .then((res) => {
         const data = res.data;
-        console.log(data);
       })
       .catch((error) => {
         setErr(error.message);
